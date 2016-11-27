@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +24,20 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         // 1. assume you already have parsed data from json
         ArrayList<JsonDataModel> dataList = new ArrayList<>();
-        dataList.add(new JsonDataModel(111111, "Bob", Color.RED)); // fake data-- pretend it's your parsed data from json value
-        dataList.add(new JsonDataModel(222222, "Peter", Color.YELLOW));
-        dataList.add(new JsonDataModel(333333, "Jean", Color.GRAY));
-        dataList.add(new JsonDataModel(444444, "David", Color.GREEN));
-        dataList.add(new JsonDataModel(555555, "Dorothy", Color.BLUE));
-        dataList.add(new JsonDataModel(666666, "Howard", Color.MAGENTA));
-        dataList.add(new JsonDataModel(777777, "Nancy", Color.CYAN));
-
+        dataList.add(new JsonDataModel(1, " 1", Color.GREEN));
+        dataList.add(new JsonDataModel(2, " 2", Color.BLUE));
+        dataList.add(new JsonDataModel(3, " 3", Color.MAGENTA));
+        dataList.add(new JsonDataModel(4, " 4", Color.CYAN));
+        dataList.add(new JsonDataModel(5, " 5", Color.GREEN));
+        dataList.add(new JsonDataModel(6, " 6", Color.BLUE));
+        dataList.add(new JsonDataModel(7, " 7", Color.MAGENTA));
+        dataList.add(new JsonDataModel(8, " 8", Color.CYAN));
+        dataList.add(new JsonDataModel(9, " 9", Color.GREEN));
+        dataList.add(new JsonDataModel(10, " 10", Color.BLUE));
+        dataList.add(new JsonDataModel(11, " 11", Color.RED));
+        dataList.add(new JsonDataModel(12, " 12", Color.YELLOW));
         ListView listView = (ListView) findViewById(R.id.test_lv);
-        MyAdapter adapter = new MyAdapter(this,dataList);
+        MyAdapter adapter = new MyAdapter(this, dataList);
         listView.setAdapter(adapter);
     }
 
@@ -68,21 +73,21 @@ public class MainActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView != null) {
-                return convertView;
+            if (convertView == null) {
+                convertView = mInflator.inflate(R.layout.child, parent, false);
             }
-            final JsonDataModel data = (JsonDataModel) getItem(position);
 
-            View childView = mInflator.inflate(R.layout.child, parent, false);
+            final JsonDataModel data = mDataList.get(position);
+
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.bgLayout = (LinearLayout) childView.findViewById(R.id.background);
+            viewHolder.bgLayout = (LinearLayout) convertView.findViewById(R.id.background);
             viewHolder.bgLayout.setBackgroundColor(data.color);
-            viewHolder.nameTv = (TextView) childView.findViewById(R.id.name);
+            viewHolder.nameTv = (TextView) convertView.findViewById(R.id.name);
             viewHolder.nameTv.setText(data.value);
-            childView.setTag(data); // That's how you keep your data with the View
-            childView.setOnClickListener(this);
+            convertView.setTag(data); // That's how you keep your data with the View
+            convertView.setOnClickListener(this);
 
-            return childView;
+            return convertView;
         }
 
         @Override
